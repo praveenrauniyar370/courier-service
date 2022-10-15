@@ -1,0 +1,30 @@
+1st Problem ->
+Class -
+1. Offers - offercode, discount, minimum eligible distance , max eligible distance, min weight, max weight
+2. Code offers -> map of offers-code and Offers (not mandatory)
+3. Request -> Base delivery cost, number of package
+4. PackageRequest -> package name, package distance, package weight, coupon-code (Optional)
+5. CourierPackage -> packageName, discountApplied, totalCost
+6. CourierChargeResponse - List <CourierChargePerPackage>
+7. Rule - Cost per kg, Cost per km
+
+
+Service ->
+OfferService -> List<Offers> -> findOffersToApply (Coupon code) return discount %
+CourierChargesService -> (base price, price per km, price per weight) -> calculateCourierCharges(pcgName, weight, distance) -> return courierCharges
+
+
+2nd problem ->
+class ->
+CourierVehicle -> max speed, maxWeight, List<Package>
+VehicleRequest -> number of vehicle, max speed, max weight
+CourierPackageWithDuration -> extend CourierPackage -> duration
+CourierChargeResponseWithDuration - List <CourierPackageWithDuration>
+
+Service ->
+VehicleService -> List<CourierVehicle> -> FindSuitableVehicle(List<Package>) -> first order by weight -> then check every highest weight accomodate
+PackageDurationService -> Vehicle service -> calculateDuration()
+
+
+Printer->
+

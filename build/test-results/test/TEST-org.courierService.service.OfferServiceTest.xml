@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.courierService.service.OfferServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-10-15T19:08:56" hostname="Praveens-MBP-2" time="0.036">
+  <properties/>
+  <testcase name="shouldAddOffers()" classname="org.courierService.service.OfferServiceTest" time="0.031"/>
+  <testcase name="shouldGetAppliedDiscountPercentage()" classname="org.courierService.service.OfferServiceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
