@@ -11,6 +11,9 @@ public class PackageCourierChargeResponse {
         this.totalCost = totalCost;
     }
 
+    public PackageCourierChargeResponse() {
+    }
+
     public String getPackageName() {
         return packageName;
     }

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class CourierChargeService {
     private final OfferService offerService;
-    private PriceRule priceRule;
+    private final PriceRule priceRule;
 
     public CourierChargeService(PriceRule priceRule, OfferService offerService) {
         this.priceRule = priceRule;

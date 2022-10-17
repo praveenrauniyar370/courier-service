@@ -1,6 +1,6 @@
 package org.courierService.model;
 
-public class PackageRequest {
+public class PackageRequest implements Comparable<PackageRequest>{
     private String packageCode;
     private Integer weight;
     private Integer distanceInKm;
@@ -34,4 +34,11 @@ public class PackageRequest {
     public String getCouponCode() {
         return couponCode;
     }
+
+
+    @Override
+    public int compareTo(PackageRequest packageRequest) {
+        return packageRequest.weight - this.weight;
+    }
+
 }
