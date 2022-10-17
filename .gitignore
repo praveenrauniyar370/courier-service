@@ -1,0 +1,40 @@
+.vscode/
+.envrc
+*.class
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+# Package Files #
+*.war
+*.ear
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+target/
+out/
+.idea/*
+*.iml
+*.DS_Store
+gcp_credentials.json
+.gradle
+/build/
+# Ignore Gradle GUI config
+gradle-app.setting
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+# Cache of project
+.gradletasknamecache
+*.properties
+# Avoid ignoring Gradle wrapper properties file
+!gradle-wrapper.properties
+.classpath
+.project
+.settings/
+bin/
+env.yaml
+*.bat
+#Log files
+*.log
+src/test/resources/mock-bucket/raw/
+src/test/resources/mock-bucket/harmonized/
+src/test/resources/mock-bucket/serving/
+env.sh
+*.env
