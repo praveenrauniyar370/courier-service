@@ -36,8 +36,20 @@ class OfferServiceTest {
         PackageRequest packageRequest = new PackageRequest("PKG3", 10, 100, "OFR003");
 
         assertEquals(5d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
+    }
 
 
+    @Test
+    void shouldGetAppliedDiscountPercentageAsZeroWhenOfferDoesNotMetCondition() {
+        PackageRequest packageRequest = new PackageRequest("PKG3", 151, 100, "OFR003");
 
+        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
+    }
+
+    @Test
+    void shouldGetAppliedDiscountPercentageAsZeroWhenCodeIsWrong() {
+        PackageRequest packageRequest = new PackageRequest("PKG3", 10, 100, "OFR004");
+
+        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
     }
 }

@@ -5,6 +5,12 @@ public class PriceRule {
     private Double costPerKilogram;
     private Double costPerKilometer;
 
+    public PriceRule(Double baseCost, Double costPerKilogram, Double costPerKilometer) {
+        this.baseCost = baseCost;
+        this.costPerKilogram = costPerKilogram;
+        this.costPerKilometer = costPerKilometer;
+    }
+
     public Double getBaseCost() {
         return baseCost;
     }

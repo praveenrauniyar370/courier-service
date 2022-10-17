@@ -1,4 +1,3 @@
-/*
 package org.courierService.service;
 
 import org.courierService.model.PackageCourierChargeResponse;
@@ -10,26 +9,25 @@ import java.util.stream.Collectors;
 
 public class CourierChargeService {
     private final OfferService offerService;
-    private Double baseDeliveryCost;
     private PriceRule priceRule;
 
-    public CourierChargeService(Double baseDeliveryCost, PriceRule priceRule, OfferService offerService) {
-        this.baseDeliveryCost = baseDeliveryCost;
+    public CourierChargeService(PriceRule priceRule, OfferService offerService) {
         this.priceRule = priceRule;
         this.offerService = offerService;
     }
 
-    public List<PackageCourierChargeResponse> calculateCourierCharges(List<PackageRequest> packageRequests) throws Exception{
+
+
+    public List<PackageCourierChargeResponse> calculateCourierCharges(List<PackageRequest> packageRequests){
         return packageRequests.stream().map(this::calculateCourierChargePerPackage).collect(Collectors.toList());
     }
 
     private PackageCourierChargeResponse calculateCourierChargePerPackage(PackageRequest packageRequest) {
-        Double appliedOfferDiscount = offerService.getAppliedOfferDiscount(packageRequest);
-        Double courierCharges = baseDeliveryCost + (packageRequest.getDistanceInKm() * priceRule.getCostPerKilogram()) +
+        Double appliedOfferDiscount = offerService.getAppliedOfferDiscountPercentage(packageRequest);
+        Double courierCharges = priceRule.getBaseCost() + (packageRequest.getDistanceInKm() * priceRule.getCostPerKilometer()) +
                 (packageRequest.getWeight() * priceRule.getCostPerKilogram());
-
-
-
+        Double  discount = (courierCharges * appliedOfferDiscount)/ 100;
+        return new PackageCourierChargeResponse(packageRequest.getPackageCode(), discount, courierCharges - discount);
     }
 }
-*/
+

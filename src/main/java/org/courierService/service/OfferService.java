@@ -34,10 +34,9 @@ public class OfferService {
     }
 
     private boolean isAppliedOfferCodeValid(Offer offer, PackageRequest packageRequest){
-        return (offer.getMinEligibleWeight() <= packageRequest.getWeight()) &&
-                (offer.getMaxEligibleWeight() >= packageRequest.getWeight()) &&
-                (offer.getMinimumEligibleDistance() <= packageRequest.getDistanceInKm()) &&
-                (offer.getMaxEligibleDistance() >= packageRequest.getWeight());
+        return offer.isDistanceEligibleForOffer(packageRequest.getDistanceInKm()) &&
+                offer.isWeightEligibleForOffer(packageRequest.getWeight());
+
     }
 
     public Double getAppliedOfferDiscountPercentage(PackageRequest packageRequest) {

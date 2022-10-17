@@ -40,4 +40,14 @@ public class Offer {
     public Integer getMaxEligibleWeight() {
         return maxEligibleWeight;
     }
+
+    public boolean isWeightEligibleForOffer(Integer packageWeight){
+        return (this.getMinEligibleWeight() <= packageWeight) &&
+                (this.getMaxEligibleWeight() >= packageWeight);
+    }
+
+    public boolean isDistanceEligibleForOffer(Integer packageDistance){
+        return (this.getMinimumEligibleDistance() <= packageDistance) &&
+                (this.getMaxEligibleDistance() >= packageDistance);
+    }
 }

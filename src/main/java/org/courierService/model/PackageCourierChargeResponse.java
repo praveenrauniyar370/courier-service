@@ -5,6 +5,12 @@ public class PackageCourierChargeResponse {
     private Double discountApplied;
     private Double totalCost;
 
+    public PackageCourierChargeResponse(String packageName, Double discountApplied, Double totalCost) {
+        this.packageName = packageName;
+        this.discountApplied = discountApplied;
+        this.totalCost = totalCost;
+    }
+
     public String getPackageName() {
         return packageName;
     }
