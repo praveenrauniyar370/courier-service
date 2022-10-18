@@ -1,6 +1,8 @@
 package org.courierService.service;
 
-import org.courierService.model.*;
+import org.courierService.model.PackageMapping;
+import org.courierService.model.PackageRequest;
+import org.courierService.model.Vehicle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +34,7 @@ class DeliveryTimeServiceTest {
         HashMap<String, Double> expectedPackageDeliveryTimeMap = new HashMap<>();
         expectedPackageDeliveryTimeMap.put("PKG1", 1.78d);
 
-        HashMap<String, Double>  packageDeliveryResponses = deliveryTimeService.calculateDeliveryTimeForPackages(Collections.singletonList(packageRequest));
+        Map<String, Double> packageDeliveryResponses = deliveryTimeService.calculateDeliveryTimeForPackages(Collections.singletonList(packageRequest));
 
         assertEquals(expectedPackageDeliveryTimeMap, packageDeliveryResponses);
     }
@@ -69,9 +72,8 @@ class DeliveryTimeServiceTest {
         expectedPackageDeliveryTimeMap.put("PKG5", 4.19d);
 
 
-        HashMap<String, Double> packageMappingsForVehicles = deliveryTimeService.calculateDeliveryTimeForPackages(Arrays.asList(packageRequest1,
+        Map<String, Double> packageMappingsForVehicles = deliveryTimeService.calculateDeliveryTimeForPackages(Arrays.asList(packageRequest1,
                 packageRequest2, packageRequest3, packageRequest4, packageRequest5));
-        System.out.println(packageMappingsForVehicles);
         assertEquals(expectedPackageDeliveryTimeMap, packageMappingsForVehicles);
 
     }

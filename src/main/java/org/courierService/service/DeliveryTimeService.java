@@ -19,18 +19,18 @@ public class DeliveryTimeService {
     }
 
     private Map<String, Double> calculateDeliveryTime(PackageMapping packageMapping){
-        HashMap<String, Double> packageDeliveryTimeMap = new HashMap<>();
+        Map<String, Double> packageDeliveryTimeMap = new HashMap<>();
         List<Vehicle> eligibleVehicle  = this.vehicles.stream()
                 .filter(vehicle -> vehicle.getRemainingWeightCapacity() >= packageMapping.getWeight()).collect(Collectors.toList());
         if(eligibleVehicle.size() > 0){
             Vehicle vehicle = eligibleVehicle.get(0);
-            vehicle.setRemainingWeightCapacity(vehicle.getRemainingWeightCapacity() - packageMapping.getWeight());
             packageMapping.getPackageRequest()
                     .stream()
                     .forEach( (packageRequest) -> {
                         double packageDeliveryResponse = calculateDeliveryTimeForAPackage(vehicle, packageRequest);
                         packageDeliveryTimeMap.put(packageRequest.getPackageCode(), packageDeliveryResponse);
                     });
+            vehicle.setRemainingWeightCapacity(vehicle.getRemainingWeightCapacity() - packageMapping.getWeight());
             return packageDeliveryTimeMap;
         }
         addReturnedVehicle();
@@ -53,8 +53,8 @@ public class DeliveryTimeService {
         earliestAvailableVehicle.setRemainingWeightCapacity(earliestAvailableVehicle.getMaxCarriableWeight() );
     };
 
-    public HashMap<String, Double>  calculateDeliveryTimeForPackages(List<PackageRequest> packageRequests){
-        HashMap<String, Double> packageDeliveryTimeMap = new HashMap<>();
+    public Map<String, Double>  calculateDeliveryTimeForPackages(List<PackageRequest> packageRequests){
+        Map<String, Double> packageDeliveryTimeMap = new HashMap<>();
         List<PackageMapping> vehiclesPackageMappings = createVehiclesPackageMapping(packageRequests);
         vehiclesPackageMappings.forEach(vehiclesPackageMapping -> {
             Map<String, Double> packageDeliveryResponsesForAVehicle = calculateDeliveryTime(vehiclesPackageMapping);

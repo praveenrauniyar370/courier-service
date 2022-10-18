@@ -8,7 +8,6 @@ public class Vehicle implements Comparable<Vehicle>{
     private double maxSpeed;
     private Integer maxCarriableWeight;
     private Integer remainingWeightCapacity;
-    private List<PackageRequest> packageRequests;
 
     private double vehicleStartTime;
     private double vehicleEndTime;
@@ -19,7 +18,6 @@ public class Vehicle implements Comparable<Vehicle>{
         this.maxSpeed = maxSpeed;
         this.maxCarriableWeight = maxCarriableWeight;
         this.remainingWeightCapacity = remainingWeightCapacity;
-        this.packageRequests = new ArrayList<>();
         this.vehicleStartTime = vehicleStartTime;
         this.vehicleEndTime = vehicleEndTime;
     }
@@ -38,10 +36,6 @@ public class Vehicle implements Comparable<Vehicle>{
 
     public Integer getRemainingWeightCapacity() {
         return remainingWeightCapacity;
-    }
-
-    public List<PackageRequest> getPackageRequests() {
-        return packageRequests;
     }
 
     public void setRemainingWeightCapacity(Integer remainingWeightCapacity) {
@@ -71,7 +65,6 @@ public class Vehicle implements Comparable<Vehicle>{
                 ", maxSpeed=" + maxSpeed +
                 ", maxCarriableWeight=" + maxCarriableWeight +
                 ", remainingWeightCapacity=" + remainingWeightCapacity +
-                ", packageRequests=" + packageRequests +
                 '}';
     }
 
