@@ -1,6 +1,5 @@
 package org.courierService.service;
 
-import org.courierService.model.PackageDeliveryResponse;
 import org.courierService.model.PackageMapping;
 import org.courierService.model.PackageRequest;
 import org.courierService.model.Vehicle;
