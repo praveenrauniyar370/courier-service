@@ -7,7 +7,9 @@ import org.courierService.model.Vehicle;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DeliveryTimeService {
@@ -17,25 +19,50 @@ public class DeliveryTimeService {
         this.vehicles = vehicles;
     }
 
-    private Double calculateDeliveryTime(PackageRequest packageRequest){
+    private Map<String, Double> calculateDeliveryTime(PackageMapping packageMapping){
+        HashMap<String, Double> packageDeliveryTimeMap = new HashMap<>();
         List<Vehicle> eligibleVehicle  = this.vehicles.stream()
-                .filter(vehicle -> vehicle.getRemainingWeightCapacity() >= packageRequest.getWeight()).collect(Collectors.toList());
+                .filter(vehicle -> vehicle.getRemainingWeightCapacity() >= packageMapping.getWeight()).collect(Collectors.toList());
         if(eligibleVehicle.size() > 0){
             Vehicle vehicle = eligibleVehicle.get(0);
-            vehicle.setRemainingWeightCapacity(vehicle.getRemainingWeightCapacity() - packageRequest.getWeight());
-            vehicle.getPackageRequests().add(packageRequest);
-            return Math.floor(packageRequest.getDistanceInKm() / vehicle.getMaxSpeed() * 100) / 100;
+            vehicle.setRemainingWeightCapacity(vehicle.getRemainingWeightCapacity() - packageMapping.getWeight());
+            packageMapping.getPackageRequest()
+                    .stream()
+                    .forEach( (packageRequest) -> {
+                        double packageDeliveryResponse = calculateDeliveryTimeForAPackage(vehicle, packageRequest);
+                        packageDeliveryTimeMap.put(packageRequest.getPackageCode(), packageDeliveryResponse);
+                    });
+            return packageDeliveryTimeMap;
         }
-        return null;
+        addReturnedVehicle();
+        return calculateDeliveryTime(packageMapping);
+    }
+
+    private double calculateDeliveryTimeForAPackage(Vehicle vehicle, PackageRequest packageRequest) {
+        double packageDeliveryTime = Math.floor(((vehicle.getVehicleStartTime()) + (packageRequest.getDistanceInKm() / vehicle.getMaxSpeed())) * 100) / 100;
+        if(vehicle.getVehicleEndTime() < packageDeliveryTime){
+            vehicle.setVehicleEndTime(packageDeliveryTime);
+        }
+        return packageDeliveryTime;
+    }
+
+    private void addReturnedVehicle() {
+        Collections.sort(vehicles);
+        Vehicle earliestAvailableVehicle = vehicles.get(0);
+        earliestAvailableVehicle.setVehicleStartTime(earliestAvailableVehicle.getVehicleEndTime() * 2);
+        earliestAvailableVehicle.setVehicleStartTime(earliestAvailableVehicle.getVehicleEndTime() * 2);
+        earliestAvailableVehicle.setRemainingWeightCapacity(earliestAvailableVehicle.getMaxCarriableWeight() );
     };
 
-    public List<PackageDeliveryResponse> calculateDeliveryTime(List<PackageRequest> packageRequests){
-        Collections.sort(packageRequests);
-        return packageRequests.stream().map(packageRequest -> {
-            PackageDeliveryResponse packageDeliveryResponse = new PackageDeliveryResponse();
-            packageDeliveryResponse.setDeliveryTime(calculateDeliveryTime(packageRequest));
-            return packageDeliveryResponse;
-        }).collect(Collectors.toList());
+    public HashMap<String, Double>  calculateDeliveryTimeForPackages(List<PackageRequest> packageRequests){
+        HashMap<String, Double> packageDeliveryTimeMap = new HashMap<>();
+        List<PackageMapping> vehiclesPackageMappings = createVehiclesPackageMapping(packageRequests);
+        vehiclesPackageMappings.forEach(vehiclesPackageMapping -> {
+            Map<String, Double> packageDeliveryResponsesForAVehicle = calculateDeliveryTime(vehiclesPackageMapping);
+                    packageDeliveryTimeMap.putAll(packageDeliveryResponsesForAVehicle);
+                });
+        return packageDeliveryTimeMap;
+
     }
 
     public List<PackageMapping> createVehiclesPackageMapping(List<PackageRequest> packageRequests){
@@ -47,10 +74,10 @@ public class DeliveryTimeService {
             if(!packageRequest.isVehicleAssigned()){
                 PackageMapping packageMapping = new PackageMapping(0);
                 updatePackageRequestAndPackageMapping(packageRequest, packageMapping);
-                Integer remainingCapacity = vehicleMaxCapacity - packageRequest.getWeight();
+                int remainingCapacity = vehicleMaxCapacity - packageRequest.getWeight();
 
                 while (remainingCapacity > 0){
-                    List<PackageRequest> eligiblePackages = filterEligiblePackage(packageRequests, remainingCapacity);
+                    List<PackageRequest> eligiblePackages = filterEligiblePackageForAVehicle(packageRequests, remainingCapacity);
                     if(eligiblePackages.size() > 0){
                         Collections.sort(eligiblePackages);
                         PackageRequest eligiblePackage = eligiblePackages.get(0);
@@ -73,7 +100,7 @@ public class DeliveryTimeService {
         packageRequest.setVehicleAssigned(true);
     }
 
-    private List<PackageRequest> filterEligiblePackage(List<PackageRequest> packageRequests, Integer remainingCapacity) {
+    private List<PackageRequest> filterEligiblePackageForAVehicle(List<PackageRequest> packageRequests, Integer remainingCapacity) {
         Integer finalRemainingCapacity = remainingCapacity;
         List<PackageRequest> eligiblePackages = packageRequests.stream().filter(
                 packageRequest1 -> !packageRequest1.isVehicleAssigned() &&
