@@ -1,7 +1,6 @@
 package org.courierService.service;
 
-import org.courierService.model.PackageMapping;
-import org.courierService.model.PackageRequest;
+import org.courierService.model.CourierPackage;
 import org.courierService.model.Vehicle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,40 +28,22 @@ class DeliveryTimeServiceTest {
 
     @Test
     void shouldAbleToCalculateDeliveryTimeForSinglePackage() {
-        PackageRequest packageRequest = new PackageRequest("PKG1", 75, 125, "OFR001");
+        CourierPackage courierPackage = new CourierPackage("PKG1", 75, 125, "OFR001");
         HashMap<String, Double> expectedPackageDeliveryTimeMap = new HashMap<>();
         expectedPackageDeliveryTimeMap.put("PKG1", 1.78d);
 
-        Map<String, Double> packageDeliveryResponses = deliveryTimeService.calculateDeliveryTimeForPackages(Collections.singletonList(packageRequest));
+        Map<String, Double> packageDeliveryResponses = deliveryTimeService.calculateDeliveryTimeForPackages(Collections.singletonList(courierPackage));
 
         assertEquals(expectedPackageDeliveryTimeMap, packageDeliveryResponses);
     }
 
     @Test
-    void shouldCreateVehiclesPackageMappingsForMaximizeLoadOnEachVehicle() {
-        PackageRequest packageRequest1 = new PackageRequest("PKG1", 50, 30, "OFR001");
-        PackageRequest packageRequest2 = new PackageRequest("PKG2", 75, 125, "OFR001");
-        PackageRequest packageRequest3 = new PackageRequest("PKG3", 175, 100, "OFR001");
-        PackageRequest packageRequest4 = new PackageRequest("PKG4", 110, 60, "OFR001");
-        PackageRequest packageRequest5 = new PackageRequest("PKG5", 155, 95, "OFR001");
-
-        List<PackageMapping> packageMappingsForVehicles = deliveryTimeService.createVehiclesPackageMapping(Arrays.asList(packageRequest1,
-                packageRequest2, packageRequest3, packageRequest4, packageRequest5));
-
-        assertEquals(4, packageMappingsForVehicles.size());
-        assertEquals(185, packageMappingsForVehicles.get(0).getWeight());
-        assertEquals(175, packageMappingsForVehicles.get(1).getWeight());
-        assertEquals(155, packageMappingsForVehicles.get(2).getWeight());
-        assertEquals(50, packageMappingsForVehicles.get(3).getWeight());
-    }
-
-    @Test
     void shouldCalculateDeliveryTimeForEachPackage() {
-        PackageRequest packageRequest1 = new PackageRequest("PKG1", 50, 30, "OFR001");
-        PackageRequest packageRequest2 = new PackageRequest("PKG2", 75, 125, "OFR001");
-        PackageRequest packageRequest3 = new PackageRequest("PKG3", 175, 100, "OFR001");
-        PackageRequest packageRequest4 = new PackageRequest("PKG4", 110, 60, "OFR001");
-        PackageRequest packageRequest5 = new PackageRequest("PKG5", 155, 95, "OFR001");
+        CourierPackage courierPackage1 = new CourierPackage("PKG1", 50, 30, "OFR001");
+        CourierPackage courierPackage2 = new CourierPackage("PKG2", 75, 125, "OFR001");
+        CourierPackage courierPackage3 = new CourierPackage("PKG3", 175, 100, "OFR001");
+        CourierPackage courierPackage4 = new CourierPackage("PKG4", 110, 60, "OFR001");
+        CourierPackage courierPackage5 = new CourierPackage("PKG5", 155, 95, "OFR001");
         HashMap<String, Double> expectedPackageDeliveryTimeMap = new HashMap<>();
         expectedPackageDeliveryTimeMap.put("PKG1", 3.98d);
         expectedPackageDeliveryTimeMap.put("PKG2", 1.78d);
@@ -72,8 +52,9 @@ class DeliveryTimeServiceTest {
         expectedPackageDeliveryTimeMap.put("PKG5", 4.19d);
 
 
-        Map<String, Double> packageMappingsForVehicles = deliveryTimeService.calculateDeliveryTimeForPackages(Arrays.asList(packageRequest1,
-                packageRequest2, packageRequest3, packageRequest4, packageRequest5));
+        Map<String, Double> packageMappingsForVehicles = deliveryTimeService.calculateDeliveryTimeForPackages(Arrays.asList(courierPackage1,
+                courierPackage2, courierPackage3, courierPackage4, courierPackage5));
+
         assertEquals(expectedPackageDeliveryTimeMap, packageMappingsForVehicles);
 
     }

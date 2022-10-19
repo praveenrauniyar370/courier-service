@@ -1,12 +1,10 @@
 package org.courierService.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Vehicle implements Comparable<Vehicle>{
-    private Integer vehicleId;
-    private double maxSpeed;
-    private Integer maxCarriableWeight;
+    private final Integer vehicleId;
+    private final double maxSpeed;
+    private final Integer maxCarriableWeight;
     private Integer remainingWeightCapacity;
 
     private double vehicleStartTime;
@@ -56,16 +54,6 @@ public class Vehicle implements Comparable<Vehicle>{
 
     public void setVehicleEndTime(double vehicleEndTime) {
         this.vehicleEndTime = vehicleEndTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Vehicle{" +
-                "vehicleId=" + vehicleId +
-                ", maxSpeed=" + maxSpeed +
-                ", maxCarriableWeight=" + maxCarriableWeight +
-                ", remainingWeightCapacity=" + remainingWeightCapacity +
-                '}';
     }
 
     @Override

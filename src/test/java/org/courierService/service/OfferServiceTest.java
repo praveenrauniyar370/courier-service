@@ -1,7 +1,7 @@
 package org.courierService.service;
 
 import org.courierService.model.Offer;
-import org.courierService.model.PackageRequest;
+import org.courierService.model.CourierPackage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,23 +33,23 @@ class OfferServiceTest {
 
     @Test
     void shouldGetAppliedDiscountPercentage() {
-        PackageRequest packageRequest = new PackageRequest("PKG3", 10, 100, "OFR003");
+        CourierPackage courierPackage = new CourierPackage("PKG3", 10, 100, "OFR003");
 
-        assertEquals(5d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
+        assertEquals(5d, offerService.getAppliedOfferDiscountPercentage(courierPackage));
     }
 
 
     @Test
     void shouldGetAppliedDiscountPercentageAsZeroWhenOfferDoesNotMetCondition() {
-        PackageRequest packageRequest = new PackageRequest("PKG3", 151, 100, "OFR003");
+        CourierPackage courierPackage = new CourierPackage("PKG3", 151, 100, "OFR003");
 
-        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
+        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(courierPackage));
     }
 
     @Test
     void shouldGetAppliedDiscountPercentageAsZeroWhenCodeIsWrong() {
-        PackageRequest packageRequest = new PackageRequest("PKG3", 10, 100, "OFR004");
+        CourierPackage courierPackage = new CourierPackage("PKG3", 10, 100, "OFR004");
 
-        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(packageRequest));
+        assertEquals(0d, offerService.getAppliedOfferDiscountPercentage(courierPackage));
     }
 }

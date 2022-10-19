@@ -1,7 +1,7 @@
 package org.courierService.service;
 
 import org.courierService.model.Offer;
-import org.courierService.model.PackageRequest;
+import org.courierService.model.CourierPackage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +33,16 @@ public class OfferService {
         return  null;
     }
 
-    private boolean isAppliedOfferCodeValid(Offer offer, PackageRequest packageRequest){
-        return offer.isDistanceEligibleForOffer(packageRequest.getDistanceInKm()) &&
-                offer.isWeightEligibleForOffer(packageRequest.getWeight());
+    private boolean isAppliedOfferCodeValid(Offer offer, CourierPackage courierPackage){
+        return offer.isDistanceEligibleForOffer(courierPackage.getDistanceInKm()) &&
+                offer.isWeightEligibleForOffer(courierPackage.getWeight());
 
     }
 
-    public Double getAppliedOfferDiscountPercentage(PackageRequest packageRequest) {
-        Offer appliedOfferCodeDetails = getAppliedOfferCodeDetails(packageRequest.getCouponCode());
+    public Double getAppliedOfferDiscountPercentage(CourierPackage courierPackage) {
+        Offer appliedOfferCodeDetails = getAppliedOfferCodeDetails(courierPackage.getCouponCode());
 
-        if(appliedOfferCodeDetails != null && isAppliedOfferCodeValid(appliedOfferCodeDetails, packageRequest)){
+        if(appliedOfferCodeDetails != null && isAppliedOfferCodeValid(appliedOfferCodeDetails, courierPackage)){
             return appliedOfferCodeDetails.getDiscountPercentage();
         } else {
             System.out.println("Applied offer code not eligible of given distance or weight");

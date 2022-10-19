@@ -1,33 +1,33 @@
 package org.courierService.service;
 
-import org.courierService.model.PackageCourierChargeResponse;
-import org.courierService.model.PackageRequest;
-import org.courierService.model.PriceRule;
+import org.courierService.model.CourierChargeResponse;
+import org.courierService.model.CourierPackage;
+import org.courierService.model.CourierChargeRule;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CourierChargeService {
     private final OfferService offerService;
-    private final PriceRule priceRule;
+    private final CourierChargeRule courierChargeRule;
 
-    public CourierChargeService(PriceRule priceRule, OfferService offerService) {
-        this.priceRule = priceRule;
+    public CourierChargeService(CourierChargeRule courierChargeRule, OfferService offerService) {
+        this.courierChargeRule = courierChargeRule;
         this.offerService = offerService;
     }
 
 
 
-    public List<PackageCourierChargeResponse> calculateCourierCharges(List<PackageRequest> packageRequests){
-        return packageRequests.stream().map(this::calculateCourierChargePerPackage).collect(Collectors.toList());
+    public List<CourierChargeResponse> calculateCourierCharges(List<CourierPackage> courierPackages){
+        return courierPackages.stream().map(this::calculateCourierChargePerPackage).collect(Collectors.toList());
     }
 
-    private PackageCourierChargeResponse calculateCourierChargePerPackage(PackageRequest packageRequest) {
-        Double appliedOfferDiscount = offerService.getAppliedOfferDiscountPercentage(packageRequest);
-        Double courierCharges = priceRule.getBaseCost() + (packageRequest.getDistanceInKm() * priceRule.getCostPerKilometer()) +
-                (packageRequest.getWeight() * priceRule.getCostPerKilogram());
+    private CourierChargeResponse calculateCourierChargePerPackage(CourierPackage courierPackage) {
+        Double appliedOfferDiscount = offerService.getAppliedOfferDiscountPercentage(courierPackage);
+        Double courierCharges = courierChargeRule.getBaseCost() + (courierPackage.getDistanceInKm() * courierChargeRule.getCostPerKilometer()) +
+                (courierPackage.getWeight() * courierChargeRule.getCostPerKilogram());
         Double  discount = (courierCharges * appliedOfferDiscount)/ 100;
-        return new PackageCourierChargeResponse(packageRequest.getPackageCode(), discount, courierCharges - discount);
+        return new CourierChargeResponse(courierPackage.getPackageCode(), discount, courierCharges - discount);
     }
 }
 

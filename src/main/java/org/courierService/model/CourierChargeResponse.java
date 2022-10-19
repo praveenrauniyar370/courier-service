@@ -1,17 +1,17 @@
 package org.courierService.model;
 
-public class PackageCourierChargeResponse {
+public class CourierChargeResponse {
     private String packageName;
     private Double discountApplied;
     private Double totalCost;
 
-    public PackageCourierChargeResponse(String packageName, Double discountApplied, Double totalCost) {
+    public CourierChargeResponse(String packageName, Double discountApplied, Double totalCost) {
         this.packageName = packageName;
         this.discountApplied = discountApplied;
         this.totalCost = totalCost;
     }
 
-    public PackageCourierChargeResponse() {
+    public CourierChargeResponse() {
     }
 
     public String getPackageName() {

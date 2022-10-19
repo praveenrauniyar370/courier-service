@@ -1,12 +1,12 @@
 package org.courierService.model;
 
 public class Offer {
-    private String offerCode;
-    private Double discountPercentage;
-    private Integer minimumEligibleDistance;
-    private Integer maxEligibleDistance;
-    private Integer minEligibleWeight;
-    private Integer maxEligibleWeight;
+    private final String offerCode;
+    private final Double discountPercentage;
+    private final Integer minimumEligibleDistance;
+    private final Integer maxEligibleDistance;
+    private final Integer minEligibleWeight;
+    private final Integer maxEligibleWeight;
 
     public Offer(String offerCode, Double discountPercentage, Integer minimumEligibleDistance, Integer maxEligibleDistance, Integer minEligibleWeight, Integer maxEligibleWeight) {
         this.offerCode = offerCode;

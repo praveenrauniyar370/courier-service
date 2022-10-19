@@ -1,11 +1,11 @@
 package org.courierService.model;
 
-public class PriceRule {
-    private Double baseCost;
-    private Double costPerKilogram;
-    private Double costPerKilometer;
+public class CourierChargeRule {
+    private final Double baseCost;
+    private final Double costPerKilogram;
+    private final Double costPerKilometer;
 
-    public PriceRule(Double baseCost, Double costPerKilogram, Double costPerKilometer) {
+    public CourierChargeRule(Double baseCost, Double costPerKilogram, Double costPerKilometer) {
         this.baseCost = baseCost;
         this.costPerKilogram = costPerKilogram;
         this.costPerKilometer = costPerKilometer;

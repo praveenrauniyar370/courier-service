@@ -1,14 +1,14 @@
 package org.courierService.model;
 
-public class PackageRequest implements Comparable<PackageRequest>{
-    private String packageCode;
-    private Integer weight;
-    private Integer distanceInKm;
+public class CourierPackage implements Comparable<CourierPackage>{
+    private final String packageCode;
+    private final Integer weight;
+    private final Integer distanceInKm;
     private String couponCode;
 
     private boolean isVehicleAssigned;
 
-    public PackageRequest(String packageCode, Integer weight, Integer distanceInKm, String couponCode) {
+    public CourierPackage(String packageCode, Integer weight, Integer distanceInKm, String couponCode) {
         this.packageCode = packageCode;
         this.weight = weight;
         this.distanceInKm = distanceInKm;
@@ -16,10 +16,11 @@ public class PackageRequest implements Comparable<PackageRequest>{
         this.isVehicleAssigned = false;
     }
 
-    public PackageRequest(String packageCode, Integer weight, Integer distanceInKm) {
+    public CourierPackage(String packageCode, Integer weight, Integer distanceInKm) {
         this.packageCode = packageCode;
         this.weight = weight;
         this.distanceInKm = distanceInKm;
+        this.isVehicleAssigned = false;
     }
 
     public String getPackageCode() {
@@ -40,8 +41,8 @@ public class PackageRequest implements Comparable<PackageRequest>{
 
 
     @Override
-    public int compareTo(PackageRequest packageRequest) {
-        return packageRequest.weight - this.weight;
+    public int compareTo(CourierPackage courierPackage) {
+        return courierPackage.weight - this.weight;
     }
 
     public void setVehicleAssigned(boolean vehicleAssigned) {

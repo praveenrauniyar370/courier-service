@@ -1,9 +1,9 @@
 package org.courierService.service;
 
 import org.courierService.model.Offer;
-import org.courierService.model.PackageCourierChargeResponse;
-import org.courierService.model.PackageRequest;
-import org.courierService.model.PriceRule;
+import org.courierService.model.CourierChargeResponse;
+import org.courierService.model.CourierPackage;
+import org.courierService.model.CourierChargeRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,20 +22,21 @@ class CourierChargeServiceTest {
                 new Offer("OFR002", 7d, 50, 150, 100, 150),
                 new Offer("OFR003", 5d, 50, 250, 10, 150)));
 
-        courierChargeService = new CourierChargeService(new PriceRule(100d, 10d, 5d), offerService);
+        courierChargeService = new CourierChargeService(new CourierChargeRule(100d, 10d, 5d), offerService);
     }
 
     @Test
     void calculateCourierChargesForGivenPackage() {
-        PackageRequest packageRequest1 = new PackageRequest("PKG1", 5, 5, "OFR001");
-        PackageRequest packageRequest2 = new PackageRequest("PKG2", 15, 5, "OFR002");
-        PackageRequest packageRequest3 = new PackageRequest("PKG3", 10, 100, "OFR003");
+        CourierPackage courierPackage1 = new CourierPackage("PKG1", 5, 5, "OFR001");
+        CourierPackage courierPackage2 = new CourierPackage("PKG2", 15, 5, "OFR002");
+        CourierPackage courierPackage3 = new CourierPackage("PKG3", 10, 100, "OFR003");
 
-        List<PackageCourierChargeResponse> packageCourierChargeResponses = courierChargeService
-                .calculateCourierCharges(Arrays.asList(packageRequest1, packageRequest2, packageRequest3));
-        PackageCourierChargeResponse package1CourierChargeResponse = packageCourierChargeResponses.get(0);
-        PackageCourierChargeResponse package2CourierChargeResponse = packageCourierChargeResponses.get(1);
-        PackageCourierChargeResponse package3CourierChargeResponse = packageCourierChargeResponses.get(2);
+        List<CourierChargeResponse> courierChargeRespons = courierChargeService
+                .calculateCourierCharges(Arrays.asList(courierPackage1, courierPackage2, courierPackage3));
+        CourierChargeResponse package1CourierChargeResponse = courierChargeRespons.get(0);
+        CourierChargeResponse package2CourierChargeResponse = courierChargeRespons.get(1);
+        CourierChargeResponse package3CourierChargeResponse = courierChargeRespons.get(2);
+
         assertEquals(0d, package1CourierChargeResponse.getDiscountApplied());
         assertEquals(175d, package1CourierChargeResponse.getTotalCost());
         assertEquals(0d, package2CourierChargeResponse.getDiscountApplied());
