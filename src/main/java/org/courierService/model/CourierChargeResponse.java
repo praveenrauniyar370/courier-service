@@ -1,5 +1,7 @@
 package org.courierService.model;
 
+import java.util.Objects;
+
 public class CourierChargeResponse {
     private String packageName;
     private Double discountApplied;
@@ -24,5 +26,27 @@ public class CourierChargeResponse {
 
     public Double getTotalCost() {
         return totalCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourierChargeResponse that = (CourierChargeResponse) o;
+        return Objects.equals(packageName, that.packageName) && Objects.equals(discountApplied, that.discountApplied) && Objects.equals(totalCost, that.totalCost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(packageName, discountApplied, totalCost);
+    }
+
+    @Override
+    public String toString() {
+        return "CourierChargeResponse{" +
+                "packageName='" + packageName + '\'' +
+                ", discountApplied=" + discountApplied +
+                ", totalCost=" + totalCost +
+                '}';
     }
 }
