@@ -18,24 +18,7 @@ public class DeliveryTimeService {
         this.vehicles = vehicles;
     }
 
-    private Map<String, Double> calculateDeliveryTime(PackageMapping packageMapping){
-        Map<String, Double> packageDeliveryTimeMap = new HashMap<>();
-        List<Vehicle> eligibleVehicle  = this.vehicles.stream()
-                .filter(vehicle -> vehicle.getRemainingWeightCapacity() >= packageMapping.getWeight()).collect(Collectors.toList());
-        if(eligibleVehicle.size() > 0){
-            Vehicle vehicle = eligibleVehicle.get(0);
-            packageMapping.getPackageRequest()
-                    .stream()
-                    .forEach( (packageRequest) -> {
-                        double packageDeliveryResponse = calculateDeliveryTimeForAPackage(vehicle, packageRequest);
-                        packageDeliveryTimeMap.put(packageRequest.getPackageCode(), packageDeliveryResponse);
-                    });
-            vehicle.setRemainingWeightCapacity(vehicle.getRemainingWeightCapacity() - packageMapping.getWeight());
-            return packageDeliveryTimeMap;
-        }
-        addReturnedVehicle();
-        return calculateDeliveryTime(packageMapping);
-    }
+
 
     private double calculateDeliveryTimeForAPackage(Vehicle vehicle, PackageRequest packageRequest) {
         double packageDeliveryTime = Math.floor(((vehicle.getVehicleStartTime()) + (packageRequest.getDistanceInKm() / vehicle.getMaxSpeed())) * 100) / 100;
@@ -52,6 +35,23 @@ public class DeliveryTimeService {
         earliestAvailableVehicle.setVehicleStartTime(earliestAvailableVehicle.getVehicleEndTime() * 2);
         earliestAvailableVehicle.setRemainingWeightCapacity(earliestAvailableVehicle.getMaxCarriableWeight() );
     };
+
+    private Map<String, Double> calculateDeliveryTime(PackageMapping packageMapping){
+        Map<String, Double> packageDeliveryTimeMap = new HashMap<>();
+        Vehicle eligibleVehicle  = this.vehicles.stream()
+                .filter(vehicle -> vehicle.getRemainingWeightCapacity() >= packageMapping.getWeight()).findFirst().orElse(null);
+        if(eligibleVehicle != null){
+            packageMapping.getPackageRequest()
+                    .forEach( (packageRequest) -> {
+                        double packageDeliveryResponse = calculateDeliveryTimeForAPackage(eligibleVehicle, packageRequest);
+                        packageDeliveryTimeMap.put(packageRequest.getPackageCode(), packageDeliveryResponse);
+                    });
+            eligibleVehicle.setRemainingWeightCapacity(eligibleVehicle.getRemainingWeightCapacity() - packageMapping.getWeight());
+            return packageDeliveryTimeMap;
+        }
+        addReturnedVehicle();
+        return calculateDeliveryTime(packageMapping);
+    }
 
     public Map<String, Double>  calculateDeliveryTimeForPackages(List<PackageRequest> packageRequests){
         Map<String, Double> packageDeliveryTimeMap = new HashMap<>();
@@ -71,26 +71,31 @@ public class DeliveryTimeService {
         for (int packageIndex = 0; packageIndex < packageRequests.size(); packageIndex++) {
             PackageRequest packageRequest = packageRequests.get(packageIndex);
             if(!packageRequest.isVehicleAssigned()){
-                PackageMapping packageMapping = new PackageMapping(0);
-                updatePackageRequestAndPackageMapping(packageRequest, packageMapping);
-                int remainingCapacity = vehicleMaxCapacity - packageRequest.getWeight();
-
-                while (remainingCapacity > 0){
-                    List<PackageRequest> eligiblePackages = filterEligiblePackageForAVehicle(packageRequests, remainingCapacity);
-                    if(eligiblePackages.size() > 0){
-                        Collections.sort(eligiblePackages);
-                        PackageRequest eligiblePackage = eligiblePackages.get(0);
-                        updatePackageRequestAndPackageMapping(eligiblePackage, packageMapping);
-                        remainingCapacity = remainingCapacity - eligiblePackage.getWeight();
-                    } else {
-                        remainingCapacity = 0;
-                    }
-                }
-                packageMappings.add(packageMapping);
+                PackageMapping vehiclePackageMapping = getVehiclePackageMapping(packageRequests, packageMappings, vehicleMaxCapacity, packageRequest);
+                packageMappings.add(vehiclePackageMapping);
             }
         }
          Collections.sort(packageMappings);
         return packageMappings;
+    }
+
+    private PackageMapping getVehiclePackageMapping(List<PackageRequest> packageRequests, ArrayList<PackageMapping> packageMappings,
+                                     Integer vehicleMaxCapacity, PackageRequest packageRequest) {
+        PackageMapping packageMapping = new PackageMapping(0);
+        updatePackageRequestAndPackageMapping(packageRequest, packageMapping);
+        int remainingCapacity = vehicleMaxCapacity - packageRequest.getWeight();
+        while (remainingCapacity > 0){
+            List<PackageRequest> eligiblePackages = filterEligiblePackageForAVehicle(packageRequests, remainingCapacity);
+            if(eligiblePackages.size() > 0){
+                Collections.sort(eligiblePackages);
+                PackageRequest eligiblePackage = eligiblePackages.get(0);
+                updatePackageRequestAndPackageMapping(eligiblePackage, packageMapping);
+                remainingCapacity = remainingCapacity - eligiblePackage.getWeight();
+            } else {
+                remainingCapacity = 0;
+            }
+        }
+        return packageMapping;
     }
 
     private void updatePackageRequestAndPackageMapping(PackageRequest packageRequest, PackageMapping packageMapping) {
@@ -100,10 +105,9 @@ public class DeliveryTimeService {
     }
 
     private List<PackageRequest> filterEligiblePackageForAVehicle(List<PackageRequest> packageRequests, Integer remainingCapacity) {
-        Integer finalRemainingCapacity = remainingCapacity;
         List<PackageRequest> eligiblePackages = packageRequests.stream().filter(
                 packageRequest1 -> !packageRequest1.isVehicleAssigned() &&
-                         finalRemainingCapacity >= packageRequest1.getWeight())
+                         remainingCapacity >= packageRequest1.getWeight())
                 .collect(Collectors.toList());
         return eligiblePackages;
     }
