@@ -41,12 +41,7 @@ public class CourierChargeResponse {
         return Objects.hash(packageName, discountApplied, totalCost);
     }
 
-    @Override
-    public String toString() {
-        return "CourierChargeResponse{" +
-                "packageName='" + packageName + '\'' +
-                ", discountApplied=" + discountApplied +
-                ", totalCost=" + totalCost +
-                '}';
+    public String formatCourierChargeResponse() {
+        return "packageName=" + packageName + ", discountApplied=" + discountApplied + ", totalCost=" + totalCost;
     }
 }

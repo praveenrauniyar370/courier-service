@@ -31,7 +31,6 @@ public class CourierChargeService {
                 .stream().
                 map(this::calculateCourierChargePerPackage).collect(Collectors.toList());
         Map<String, Double> packageDeliveryTimeMapping = this.deliveryTimeService.calculateDeliveryTimeForPackages(courierPackages);
-        System.out.println(packageDeliveryTimeMapping);
         return courierChargeResponses.stream()
                 .map((courierChargeResponse -> mapDeliveryTimeWithPackage(courierChargeResponse, packageDeliveryTimeMapping)))
                 .collect(Collectors.toList());
