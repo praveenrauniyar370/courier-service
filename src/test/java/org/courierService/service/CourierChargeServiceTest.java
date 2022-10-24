@@ -60,7 +60,7 @@ class CourierChargeServiceTest {
         CourierPackage courierPackage2 = new CourierPackage("PKG2", 75, 125, "OFFR0008");
         CourierPackage courierPackage3 = new CourierPackage("PKG3", 175, 100, "OFFR003");
         CourierPackage courierPackage4 = new CourierPackage("PKG4", 110, 60, "OFR002");
-        CourierPackage courierPackage5 = new CourierPackage("PKG5", 155, 95);
+        CourierPackage courierPackage5 = new CourierPackage("PKG5", 155, 95, "NA");
 
         CourierChargeWithDeliveryTime expectedResponseForPKG1 = new CourierChargeWithDeliveryTime("PKG1", 0d, 750d, 3.98d);
         CourierChargeWithDeliveryTime expectedResponseForPKG2 = new CourierChargeWithDeliveryTime("PKG2", 0d,1475d, 1.78d);

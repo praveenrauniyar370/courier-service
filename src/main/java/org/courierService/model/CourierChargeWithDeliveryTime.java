@@ -3,7 +3,7 @@ package org.courierService.model;
 import java.util.Objects;
 
 public class CourierChargeWithDeliveryTime extends CourierChargeResponse{
-    private Double deliveryTime;
+    private final Double deliveryTime;
 
     public CourierChargeWithDeliveryTime(String packageName, Double discountApplied, Double totalCost, Double deliveryTime) {
         super(packageName, discountApplied, totalCost);
@@ -26,8 +26,7 @@ public class CourierChargeWithDeliveryTime extends CourierChargeResponse{
 
     @Override
     public String toString() {
-        return "CourierChargeWithDeliveryTime{" +
-                "deliveryTime=" + deliveryTime +
-                '}';
+        return "Package Name=" + super.getPackageName() + ", Discount Applied=" + super.getDiscountApplied()
+                + ", Total Cost=" + super.getTotalCost() + ", Delivery Time=" + this.deliveryTime ;
     }
 }

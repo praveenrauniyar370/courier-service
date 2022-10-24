@@ -23,12 +23,13 @@ public class OfferService {
     }
 
 
-    private Offer getAppliedOfferCodeDetails(String appliedOfferCode) {
-        List<Offer> appliedOffers = offers.stream().filter((offer -> offer.getOfferCode().equals(appliedOfferCode))).collect(Collectors.toList());
+    private Offer getAppliedOfferCodeDetails(CourierPackage courierPackage) {
+        List<Offer> appliedOffers = offers.stream().filter((offer -> offer.getOfferCode().equals(courierPackage.getCouponCode())))
+                .collect(Collectors.toList());
         if(appliedOffers.size() > 0){
             return appliedOffers.get(0);
         } else {
-            System.out.println("Applied Offer Code is not valid");
+            System.out.println("Applied Offer Code is not valid for " + courierPackage.getPackageCode());
         }
         return  null;
     }
@@ -40,12 +41,13 @@ public class OfferService {
     }
 
     public Double getAppliedOfferDiscountPercentage(CourierPackage courierPackage) {
-        Offer appliedOfferCodeDetails = getAppliedOfferCodeDetails(courierPackage.getCouponCode());
+        Offer appliedOfferCodeDetails = getAppliedOfferCodeDetails(courierPackage);
 
         if(appliedOfferCodeDetails != null && isAppliedOfferCodeValid(appliedOfferCodeDetails, courierPackage)){
             return appliedOfferCodeDetails.getDiscountPercentage();
         } else {
-            System.out.println("Applied offer code not eligible of given distance or weight");
+            System.out.println("Applied offer code not eligible "
+                    + courierPackage.getPackageCode() + " so discount will be not applicable");
         }
         return 0d;
     }

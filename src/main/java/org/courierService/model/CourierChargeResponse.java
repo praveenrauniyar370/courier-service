@@ -3,17 +3,14 @@ package org.courierService.model;
 import java.util.Objects;
 
 public class CourierChargeResponse {
-    private String packageName;
-    private Double discountApplied;
-    private Double totalCost;
+    private final String packageName;
+    private final Double discountApplied;
+    private final Double totalCost;
 
     public CourierChargeResponse(String packageName, Double discountApplied, Double totalCost) {
         this.packageName = packageName;
         this.discountApplied = discountApplied;
         this.totalCost = totalCost;
-    }
-
-    public CourierChargeResponse() {
     }
 
     public String getPackageName() {
@@ -41,7 +38,8 @@ public class CourierChargeResponse {
         return Objects.hash(packageName, discountApplied, totalCost);
     }
 
-    public String formatCourierChargeResponse() {
-        return "packageName=" + packageName + ", discountApplied=" + discountApplied + ", totalCost=" + totalCost;
+    @Override
+    public String toString() {
+        return "Package Name=" + packageName + ", Discount Applied=" + discountApplied + ", Total Cost=" + totalCost;
     }
 }
