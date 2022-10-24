@@ -9,9 +9,9 @@ As part of this feature You will be able to calculate delivery cost and discount
 * OFR003, 5%, 50-250, 10-150
 
 #### Offer Criteria -
-* Only offer code can be applied for any given package. 
+* Only one offer code can be applied for any given package. 
 * Package should meet the required mentioned offer criterias.
-* If offer code is , discounted amount not valid/found discounted amount will be equal to 0.
+* If offer code is not valid / Not Found, discounted amount will be equal to 0.
 
 #### How to calculate Delivery Cost - Follow the steps Below
 * Run the application
@@ -24,7 +24,7 @@ As part of this feature You will be able to calculate delivery cost and discount
 * 3.Package Distance (Integer value)
 * 4.Coupon code if applicable or input NA (String value)
 * You must enter 4 value in above order by space separated for package details
-* Ex Package Request - PKG1 5 5 OFR001
+* Example -  Package Request - PKG1 5 5 OFR001
 * Once you entered all package details It will ask Do You Want to Calculate delivery Time
 * Enter No
 * It will print Courier Charge Response of all packages.
@@ -37,5 +37,5 @@ Delivery Time
 * Follow the above calculate Delivery Cost steps till Do You Want to Calculate delivery Time ?
 * Enter Yes as Input value for Do You Want to Calculate delivery Time ?
 * After this You need to input  " no_of_vehicles max_speed max_carriable_weight" by space separated.
-* Please input only 3 value in same above order. Ex- 2 70 200
+* Please input only 3 value in same above order. Example- 2 70 200
 * After this you will get Courier charge response with Delivery time of each package.
